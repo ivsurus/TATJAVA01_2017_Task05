@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appetizers xmlns ="http://www.epam.com/appetizers"
+            xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.epam.com/appetizers menu.xsd">
+
+    <appetizer name="ХОЛОДНЫЕ ЗАКУСКИ">
+
+        <food id="c1">
+            <picture>https://pearl.com/cold/assorti.jpg</picture>
+            <name>Ассорти рыбное</name>
+            <type id="c1t1">
+                <description>Слабосоленая форель, семга</description>
+                <price>10</price>
+            </type>
+            <portion>100/20/15 гр.</portion>
+        </food>
+
+        <food id="c2">
+            <picture>https://pearl.com/cold/tartaletki.jpg</picture>
+            <name>Тарталетки с красной икрой</name>
+            <type id = "c2t1">
+                <description>Тарталетки с икрой (красной)</description>
+                <price>20</price>
+            </type>
+            <portion>50/10/40 гр.</portion>
+        </food>
+
+        <food id="c3">
+            <picture>https://pearl.com/cold/assorti2.jpg</picture>
+            <name>Ассорти баклажаны</name>
+            <type id = "c3t1">
+                <description>Жареные баклажаны с помидорами</description>
+                <price>5</price>
+            </type>
+            <type id = "c3t2">
+                <description>Жареные баклажаны с чесноком</description>
+                <price>4</price>
+            </type>
+            <type id = "c3t3">
+                <description>Жареные баклажаны с хреном</description>
+                <price>3</price>
+            </type>
+            <portion>50/10/40 гр.</portion>
+        </food>
+
+    </appetizer>
+
+    <appetizer name="ГОРЯЧИЕ ЗАКУСКИ">
+
+        <food id="h1">
+            <picture>https://pearl.com/hot/lobio.jpg</picture>
+            <name>Лобио с шампиньонами</name>
+            <type id ="h1t1">
+                <description>Фасоль с шампиньонами и грецким орехом</description>
+                <price>105</price>
+            </type>
+            <portion>150/5 гр.</portion>
+        </food>
+
+        <food id="h2">
+            <picture>https://pearl.com/hot/ahmatar</picture>
+            <name>Ахматар мясной</name>
+            <type id = "h2t1">
+                <description>Колбаса, ветчина, буженина, сыр, запеченые на мангале в лаваше</description>
+                <price>150</price>
+            </type>
+            <portion>2 шт.</portion>
+        </food>
+
+        <food id="h3">
+            <picture>https://pearl.com/hot/julen.jpg</picture>
+            <name>Жульен</name>
+            <type id = "h3t1">
+                <description>с курицей</description>
+                <price>145</price>
+            </type>
+            <type id = "h3t2">
+                <description>с грибами</description>
+                <price>155</price>
+            </type>
+            <portion>120/1 гр.</portion>
+        </food>
+
+    </appetizer>
+
+    <appetizer name="ЗАВТРАКИ">
+
+        <food id="b1">
+            <picture>https://pearl.com/breakafasts/glazuniya.jpg</picture>
+            <name>Глазунья</name>
+           <type id = "b1t1">
+               <description>2 яйца (на выбор: ветчина, сыр, помидоры</description>
+               <price>30</price>
+           </type>
+            <portion>150 гр.</portion>
+        </food>
+
+        <food id="b2">
+            <picture>https://pearl.com/breakafasts/blinchiki.jpg</picture>
+            <name>Блинчики с мясом</name>
+            <type id = "b2t1">
+                <description>Жареные блинчики с мясом</description>
+                <price>40</price>
+            </type>
+            <portion>150 гр.</portion>
+        </food>
+
+    </appetizer>
+
+</appetizers>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.epam.com/appetizers"
+        xmlns:tns="http://www.epam.com/appetizers"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <element name="appetizers">
+    <complexType>
+        <sequence>
+            <element name="appetizer" type="tns:AppetizerType" minOccurs="0" maxOccurs="3"/>
+        </sequence>
+    </complexType>
+    </element>
+
+    <complexType name="AppetizerType">
+        <sequence>
+            <element name="food" type="tns:FoodType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+        <attribute name="name" type="tns:AppetizerAttributeType" use="required"/>
+    </complexType>
+
+    <complexType name="FoodType">
+        <sequence>
+            <element name="picture" type="tns:PictureType"/>
+            <element name="name" type="tns:NameType"/>
+            <element name="type" type="tns:TypeType" minOccurs="1" maxOccurs="unbounded" />
+            <element name="portion" type="tns:PortionType"/>
+        </sequence>
+        <attribute name="id" type="ID" use="required"/>
+    </complexType>
+
+    <complexType name="TypeType">
+        <sequence>
+            <element name="description" type="string" />
+            <element name="price" type="nonNegativeInteger" default="0"/>
+        </sequence>
+        <attribute name="id" type="ID" use="required"/>
+    </complexType>
+
+    <simpleType name="AppetizerAttributeType">
+        <restriction base="string">
+            <enumeration value="ХОЛОДНЫЕ ЗАКУСКИ"/>
+            <enumeration value="ГОРЯЧИЕ ЗАКУСКИ"/>
+            <enumeration value="ЗАВТРАКИ"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="PictureType">
+        <restriction base="string">
+            <pattern value="(https?|ftp|file)://[-a-zA-Z0-9+@#/%?=~_|!:,.;]*[-a-zA-Z0-9+@#/%=~_|]"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="NameType">
+        <restriction base="string">
+            <pattern value="[- a-zA-Zа-яА-ЯёЁ]+"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="PortionType">
+        <restriction base="string">
+            <pattern value="([1-9]{1}[0-9]? шт.)|([1-9]{1}[0-9/]* гр.)"/>
+        </restriction>
+    </simpleType>
+
+</schema>
