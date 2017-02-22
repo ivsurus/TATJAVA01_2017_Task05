@@ -9,7 +9,6 @@ import com.epam.menu.dao.exeption.DAOException;
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,24 +25,21 @@ public class SAXParserDAO extends DefaultHandler implements ParserDAO{
     private List <String> type;
     private StringBuilder text;
 
-    private final static String MENU = "menu.xml";
-
     @Override
-    public Map<Appetizer, List<Food>> parseMenu(String request) throws DAOException {
+    public Map<Appetizer, List<Food>> parseMenu(String request) throws
+            DAOException {
         Map<Appetizer, List<Food>> menu;
         try {
             XMLReader reader = XMLReaderFactory.createXMLReader();
             SAXParserDAO handler = new SAXParserDAO();
             reader.setContentHandler(handler);
-            reader.parse(new InputSource(MENU));
-            // включение проверки действительности
+            reader.parse(new InputSource(request));
             reader.setFeature("http://xml.org/sax/features/validation", true);
-            // включение обработки пространств имен
             reader.setFeature("http://xml.org/sax/features/namespaces", true);
-            // включение канонизации строк
-            reader.setFeature("http://xml.org/sax/features/string-interning", true);
-            // отключение обработки схем
-            reader.setFeature("http://apache.org/xml/features/validation/schema", false);
+            reader.setFeature("http://xml.org/sax/features/string-interning",
+                    true);
+            reader.setFeature("http://apache.org/xml/features/validation/schema",
+                    false);
             menu = handler.getMenu();
         } catch (SAXException | IOException e){
             throw new DAOException();
@@ -51,18 +47,8 @@ public class SAXParserDAO extends DefaultHandler implements ParserDAO{
         return menu;
     }
 
-
     public Map getMenu() {
-
         return menu;
-    }
-
-    public void startDocument() throws SAXException {
-        System.out.println("Parsing started.");
-    }
-
-    public void endDocument() throws SAXException {
-        System.out.println("Parsing ended.");
     }
 
     public void startElement(String uri, String localName, String qName,
@@ -71,26 +57,31 @@ public class SAXParserDAO extends DefaultHandler implements ParserDAO{
 
         if (qName.equals(MenuTagName.FOOD.toString().toLowerCase())){
             food = new Food();
-            food.setId(attributes.getValue(MenuAttributeName.ID.toString().toLowerCase()));
+            food.setId(attributes.getValue(MenuAttributeName.ID.toString()
+                    .toLowerCase()));
         }
 
         if (qName.equals(MenuTagName.TYPE.toString().toLowerCase())){
             type = new ArrayList<>();
-            type.add(attributes.getValue(MenuAttributeName.ID.toString().toLowerCase()));
+            type.add(attributes.getValue(MenuAttributeName.ID.toString()
+                    .toLowerCase()));
         }
 
         if (qName.equals(MenuTagName.APPETIZER.toString().toLowerCase())){
             appetizer = new Appetizer();
-            appetizer.setName(attributes.getValue(MenuAttributeName.NAME.toString().toLowerCase()));
+            appetizer.setName(attributes.getValue(MenuAttributeName.NAME
+                    .toString().toLowerCase()));
             foodList = new ArrayList<>();
         }
     }
 
     public void characters(char[] buffer, int start, int length) {
+
         text.append(buffer, start, length);
     }
 
-    public void endElement(String uri, String localName, String qName) throws SAXException {
+    public void endElement(String uri, String localName, String qName)
+            throws SAXException {
 
         MenuTagName tagName = MenuTagName.valueOf(qName.toUpperCase());
 
@@ -129,20 +120,6 @@ public class SAXParserDAO extends DefaultHandler implements ParserDAO{
                 break;
         }
     }
-    public void warning(SAXParseException exception) {
-        System.err.println("WARNING: line " + exception.getLineNumber() + ": "
-                + exception.getMessage());
-    }
-    public void error(SAXParseException exception) {
-        System.err.println("ERROR: line " + exception.getLineNumber() + ": "
-                + exception.getMessage());
-    }
-    public void fatalError(SAXParseException exception) throws SAXException {
-        System.err.println("FATAL: line " + exception.getLineNumber() + ": "
-                + exception.getMessage());
-        throw (exception);
-    }
-
 
 }
 

@@ -10,7 +10,7 @@ public final class Controller{
     public String executeTask(String request){
         String commandName;
         Command executionCommand;
-        commandName = request.split(" ")[0];
+        commandName = request.split("_")[0];
         executionCommand = provider.getCommand(commandName);
         String response;
         response = executionCommand.execute(request);

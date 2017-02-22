@@ -21,7 +21,6 @@ import java.util.Map;
 
 public class StAXParserDAO implements ParserDAO {
 
-    private final static String MENU = "menu.xml";
 
     @Override
     public Map<Appetizer, List<Food>> parseMenu(String request) throws
@@ -29,7 +28,7 @@ public class StAXParserDAO implements ParserDAO {
         Map<Appetizer, List<Food>> menu;
         try {
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-            InputStream input = new FileInputStream(MENU);
+            InputStream input = new FileInputStream(request);
             XMLStreamReader reader = inputFactory.createXMLStreamReader(input);
             menu = getMenu(reader);
         } catch (XMLStreamException | FileNotFoundException e) {

@@ -20,15 +20,13 @@ import java.util.Map;
 
 public class DOMParserDAO implements ParserDAO{
 
-    private final static String MENU = "menu.xml";
-
     @Override
     public Map<Appetizer, List<Food>> parseMenu(String request)
                                                 throws DAOException {
         DOMParser parser = new DOMParser();
         Map<Appetizer, List<Food>> menu;
         try {
-            parser.parse(MENU);
+            parser.parse(request);
             Document document = parser.getDocument();
             menu = getMenu(document);
         } catch (SAXException | IOException e) {

@@ -1,6 +1,5 @@
 package com.epam.menu.runner;
 
-
 import com.epam.menu.view.ConsoleMenu;
 import org.xml.sax.SAXException;
 
