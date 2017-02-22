@@ -17,6 +17,7 @@ public final class UseSAXParser implements Command {
 
     @Override
     public String execute(String request) {
+        request = request.split("_")[1];
         Map <Appetizer, List<Food>> menu;
         ServiceFactory serviceObjectFactory = ServiceFactory.getInstance();
         ParserService parserService = serviceObjectFactory.getSAXParserService();
