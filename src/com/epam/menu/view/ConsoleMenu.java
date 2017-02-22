@@ -17,7 +17,8 @@ public class ConsoleMenu {
 
     public void start(){
         System.out.println(COMMAND_HELPER);
-        System.out.println(controller.executeTask(readUserInput()+ DELIMITER + MENU));
+        System.out.println(controller.executeTask(readUserInput()+ DELIMITER
+                + MENU));
     }
 
     private String readUserInput(){
