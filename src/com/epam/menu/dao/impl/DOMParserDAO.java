@@ -30,25 +30,43 @@ public class DOMParserDAO implements ParserDAO{
         try {
             parser.parse(MENU);
             Document document = parser.getDocument();
-            menu = parseMenu(document);
+            menu = getMenu(document);
         } catch (SAXException | IOException e) {
             throw new DAOException(e);
         }
             return menu;
     }
 
+    private Map getMenu(Document document) throws SAXException, IOException{
+        Map<Appetizer, List<Food>> menu = new HashMap<>();
+        Element appertizersElement = document.getDocumentElement();
+        NodeList appertizerNodes = appertizersElement.getElementsByTagName
+                (MenuTagName.APPETIZER.toString().toLowerCase());
+        addAppetizer(menu, appertizerNodes);
+        return menu;
+    }
 
-
-    private void getAppetizer(Document document){
-
+    private void addAppetizer(Map menu, NodeList appertizerNodes){
+        List<Food> foodList;
+        Appetizer appetizer;
+        for (int i = 0; i < appertizerNodes.getLength(); i++) {
+            appetizer = new Appetizer();
+            Element appertizerElement = (Element) appertizerNodes.item(i);
+            appetizer.setName(appertizerElement.getAttribute(MenuAttributeName
+                    .NAME.toString().toLowerCase()));
+            NodeList foodNodes = appertizerElement.getElementsByTagName(MenuTagName
+                    .FOOD.toString().toLowerCase());
+            foodList = getFoodList(foodNodes);
+            menu.put(appetizer,foodList);
+        }
     }
 
     private List<Food> getFoodList(NodeList foodNodes){
         List<Food> foodList = new ArrayList<>();
         Food food;
-        for (int j = 0; j < foodNodes.getLength(); j++ ){
+        for (int i = 0; i < foodNodes.getLength(); i++ ){
             food = new Food();
-            Element foodElement = (Element) foodNodes.item(j);
+            Element foodElement = (Element) foodNodes.item(i);
             food.setId(foodElement.getAttribute(MenuAttributeName.ID
                     .toString().toLowerCase()));
             food.setName(getSingleChild(foodElement, MenuTagName.NAME
@@ -58,96 +76,31 @@ public class DOMParserDAO implements ParserDAO{
             food.setPortion(getSingleChild(foodElement, MenuTagName.PORTION
                     .toString().toLowerCase()).getTextContent().trim());
             foodList.add(food);
-            NodeList typeNodes = foodElement.getElementsByTagName(MenuTagName.TYPE
-                    .toString().toLowerCase());
-            getType(food, typeNodes);
+            NodeList typeNodes = foodElement.getElementsByTagName(MenuTagName
+                    .TYPE.toString().toLowerCase());
+            addType(food, typeNodes);
         }
         return foodList;
     }
 
-    private void getType(Food food, NodeList typeNodes){
+    private void addType(Food food, NodeList typeNodes){
+        List<String> typeList;
         for (int i=0; i < typeNodes.getLength(); i++) {
             Element typeElement = (Element) typeNodes.item(i);
-            List<String> type = new ArrayList<>();
-            type.add(typeElement.getAttribute(MenuAttributeName.ID.toString()
+            typeList = new ArrayList<>();
+            typeList.add(typeElement.getAttribute(MenuAttributeName.ID.toString()
                     .toLowerCase()));
-            type.add(getSingleChild(typeElement, MenuTagName.DESCRIPTION.toString()
+            typeList.add(getSingleChild(typeElement, MenuTagName.DESCRIPTION.toString()
                     .toLowerCase()).getTextContent().trim());
-            type.add(getSingleChild(typeElement, MenuTagName.PRICE.toString()
+            typeList.add(getSingleChild(typeElement, MenuTagName.PRICE.toString()
                     .toLowerCase()).getTextContent().trim());
-            food.setTypes(type.get(0),type.get(1),type.get(2));
+            food.setTypes(typeList.get(0),typeList.get(1),typeList.get(2));
         }
     }
-
-
-    private Map parseMenu(Document document) throws SAXException, IOException{
-
-        Map<Appetizer, List<Food>> appetizersMap = new HashMap<>();
-
-        List<Food> foodList;
-        Element appertizersElement = document.getDocumentElement();
-        NodeList appertizerNodes = appertizersElement.getElementsByTagName(MenuTagName.APPETIZER.toString().toLowerCase());
-        Appetizer appetizer;
-        for (int i = 0; i < appertizerNodes.getLength(); i++) {
-            appetizer = new Appetizer();
-            Element appertizerElement = (Element) appertizerNodes.item(i);
-            appetizer.setName(appertizerElement.getAttribute(MenuAttributeName.NAME.toString().toLowerCase()));
-            appetizersMap.put(appetizer, null);
-            NodeList foodNodes = appertizerElement.getElementsByTagName(MenuTagName.FOOD.toString().toLowerCase());
-            foodList = getFoodList(foodNodes);
-            appetizersMap.put(appetizer,foodList);
-        }
-        return appetizersMap;
-    }
-
-
-
-
-    /*private Map parseMenu(Document document) throws SAXException, IOException{
-
-        Map<Appetizer, List<Food>> appetizersMap = new HashMap<>();
-        List<Food> foodList;
-        Element appertizersElement = document.getDocumentElement();
-        NodeList appertizerNodes = appertizersElement.getElementsByTagName(MenuTagName.APPETIZER.toString().toLowerCase());
-
-        Appetizer appetizer;
-        for (int i = 0; i < appertizerNodes.getLength(); i++) {
-            foodList = new ArrayList<>();
-            appetizer = new Appetizer();
-            Element appertizerElement = (Element) appertizerNodes.item(i);
-            appetizer.setName(appertizerElement.getAttribute(MenuAttributeName.NAME.toString().toLowerCase()));
-            appetizersMap.put(appetizer, null);
-            NodeList foodNodes = appertizerElement.getElementsByTagName(MenuTagName.FOOD.toString().toLowerCase());
-            Food food;
-
-            for (int j = 0; j < foodNodes.getLength(); j++ ){
-                food = new Food();
-                Element foodElement = (Element) foodNodes.item(j);
-                food.setId(foodElement.getAttribute(MenuAttributeName.ID.toString().toLowerCase()));
-                food.setName(getSingleChild(foodElement, MenuTagName.NAME.toString().toLowerCase()).getTextContent().trim());
-                food.setPicture(getSingleChild(foodElement, MenuTagName.PICTURE.toString().toLowerCase()).getTextContent().trim());
-                food.setPortion(getSingleChild(foodElement, MenuTagName.PORTION.toString().toLowerCase()).getTextContent().trim());
-                foodList.add(food);
-                NodeList typeNodes = foodElement.getElementsByTagName(MenuTagName.TYPE.toString().toLowerCase());
-                for (int k=0; k < typeNodes.getLength(); k++) {
-                    Element typeElement = (Element) typeNodes.item(k);
-                    List<String> type = new ArrayList<>();
-                    type.add(typeElement.getAttribute(MenuAttributeName.ID.toString().toLowerCase()));
-                    type.add(getSingleChild(typeElement, MenuTagName.DESCRIPTION.toString().toLowerCase()).getTextContent().trim());
-                    type.add(getSingleChild(typeElement, MenuTagName.PRICE.toString().toLowerCase()).getTextContent().trim());
-                    food.setTypes(type.get(0),type.get(1),type.get(2));
-                }
-            }
-            appetizersMap.put(appetizer,foodList);
-        }
-        return appetizersMap;
-    }*/
 
     private Element getSingleChild(Element element, String childName){
         NodeList nlist = element.getElementsByTagName(childName);
         Element child = (Element) nlist.item(0);
         return child;
     }
-
-
 }

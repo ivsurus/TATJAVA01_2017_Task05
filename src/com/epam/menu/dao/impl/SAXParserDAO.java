@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class SAXParserDAO extends DefaultHandler implements ParserDAO{
 
-    private Map<Appetizer, List<Food>> appetizersMap = new HashMap<>();
+    private Map<Appetizer, List<Food>> menu = new HashMap<>();
     private List<Food> foodList;
     private Appetizer appetizer;
     private Food food;
@@ -35,7 +35,7 @@ public class SAXParserDAO extends DefaultHandler implements ParserDAO{
             XMLReader reader = XMLReaderFactory.createXMLReader();
             SAXParserDAO handler = new SAXParserDAO();
             reader.setContentHandler(handler);
-            reader.parse(new InputSource("menu.xml"));
+            reader.parse(new InputSource(MENU));
             // включение проверки действительности
             reader.setFeature("http://xml.org/sax/features/validation", true);
             // включение обработки пространств имен
@@ -44,7 +44,7 @@ public class SAXParserDAO extends DefaultHandler implements ParserDAO{
             reader.setFeature("http://xml.org/sax/features/string-interning", true);
             // отключение обработки схем
             reader.setFeature("http://apache.org/xml/features/validation/schema", false);
-            menu = handler.getAppetizersMap();
+            menu = handler.getMenu();
         } catch (SAXException | IOException e){
             throw new DAOException();
         }
@@ -52,8 +52,9 @@ public class SAXParserDAO extends DefaultHandler implements ParserDAO{
     }
 
 
-    public Map getAppetizersMap() {
-        return appetizersMap;
+    public Map getMenu() {
+
+        return menu;
     }
 
     public void startDocument() throws SAXException {
@@ -66,7 +67,6 @@ public class SAXParserDAO extends DefaultHandler implements ParserDAO{
 
     public void startElement(String uri, String localName, String qName,
                              Attributes attributes) throws SAXException {
-        System.out.println("startElement -> " + "uri: " + uri + ", localName: " + localName + ", qName: " + qName);
         text = new StringBuilder();
 
         if (qName.equals(MenuTagName.FOOD.toString().toLowerCase())){
@@ -97,12 +97,13 @@ public class SAXParserDAO extends DefaultHandler implements ParserDAO{
         switch(tagName){
 
             case APPETIZER:
-                appetizersMap.put(appetizer, foodList);
+                menu.put(appetizer, foodList);
                 break;
 
             case TYPE:
                 food.setTypes(type.get(0), type.get(1), type.get(2));
                 break;
+
             case NAME:
                 food.setName(text.toString());
                 break;
