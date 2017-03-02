@@ -9,7 +9,7 @@ public class ServiceTool {
     private final static String DELIMITER = "\\.";
 
 
-    public static synchronized boolean isRequestValid(String request){
+    public static boolean isRequestValid(String request){
         String extension = request.split(DELIMITER)[1];
         File menuFile = new File(request);
         return (menuFile.exists()) && (menuFile.length() != 0) &&
