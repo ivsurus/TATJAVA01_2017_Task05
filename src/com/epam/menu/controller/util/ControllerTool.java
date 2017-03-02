@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class ControllerTool {
 
-    public static synchronized String createResponseForUser(Map menu){
+    public static String createResponseForUser(Map menu){
         StringBuilder builder = new StringBuilder();
         Iterator<Map.Entry<Appetizer, List<Food>>> foodIterator =
                 menu.entrySet().iterator();
